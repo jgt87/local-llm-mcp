@@ -10,7 +10,7 @@ this one is for fast, private, low-stakes calls where the answer is wanted in th
 | tool | does |
 | --- | --- |
 | `local_ask` | Prompt in, text out. Summaries, boilerplate, commit messages, extraction. |
-| `local_classify` | Sort text into one of your labels. The reply is validated against the label set, not trusted, and the model may answer that none of them fit. |
+| `local_classify` | Sort text into one of your labels. Replies outside the label set are rejected rather than guessed at, and the model can answer that none fit — though a small model will still label plainly unrelated text with confidence, so treat a result as triage, not a verdict. |
 | `local_models` | List models Ollama has on disk, and the configured default. |
 
 No file access, no command execution, no memory between calls.
@@ -26,7 +26,7 @@ ollama pull qwen2.5-coder:7b
 Register with Claude Code:
 
 ```sh
-claude mcp add --scope user local-llm -- node C:/Files/Apps/LocalLLM/dist/index.js
+claude mcp add --scope user local-llm -- node /absolute/path/to/dist/index.js
 ```
 
 ## Configuration

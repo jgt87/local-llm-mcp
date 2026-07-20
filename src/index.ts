@@ -72,8 +72,9 @@ server.registerTool(
       "validated against your label set rather than trusted: if the model answers with something " +
       "outside the list, or hedges between labels, this returns matched=false with the raw reply " +
       "instead of guessing. By default the model may also answer that no label fits, which comes " +
-      "back as declined=true — small models will otherwise pick a label confidently for text that " +
-      "belongs to none of them. Set allowNone=false only when a forced choice is genuinely wanted. " +
+      "back as declined=true. That escape hatch helps but does not hold: a small model will still " +
+      "pick a confident in-set label for text that belongs to none of them, so a returned label is " +
+      "triage, not a verdict. Set allowNone=false only when a forced choice is genuinely wanted. " +
       "Good for triage — log lines, error vs warning, which files look relevant, is this diff " +
       "risky. Cheap and private; use it where a wrong answer is cheap for you to detect.",
     inputSchema: {
@@ -98,10 +99,12 @@ server.registerTool(
     },
   },
   async ({ content, labels, instruction, allowNone, model }) => {
-    // Safe by default: without the escape hatch a small model reliably invents
-    // a label for unrelated text, which is the failure this tool must not have.
-    // Suppressed when the caller already supplies a "none" label of their own,
-    // since two ways of saying nothing-fits would be ambiguous.
+    // Offered by default: without the escape hatch a small model invents a
+    // label for unrelated text every time. It reduces that failure rather than
+    // removing it — measured against qwen2.5-coder:7b, plainly unrelated text
+    // still draws a confident in-set label often enough that callers must
+    // verify. Suppressed when the caller already supplies a "none" label of
+    // their own, since two ways of saying nothing-fits would be ambiguous.
     const escape = (allowNone ?? true) && !hasOwnNone(labels);
     const offered = escape ? [...labels, NONE] : labels;
 
