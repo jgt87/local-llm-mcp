@@ -131,6 +131,16 @@ export async function listModels(timeoutMs = 15_000): Promise<{ name: string; si
  * or "**error**", so match generously on shape, but refuse anything genuinely
  * ambiguous rather than guessing.
  */
+export const NONE = "none";
+
+/**
+ * Does the caller's label set already contain something meaning "none"? If so
+ * the escape hatch would be ambiguous, so callers must not add another.
+ */
+export function hasOwnNone(labels: string[]): boolean {
+  return labels.some((l) => l.trim().toLowerCase() === NONE);
+}
+
 export function matchLabel(raw: string, labels: string[]): string | undefined {
   const cleaned = raw
     .toLowerCase()

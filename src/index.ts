@@ -2,7 +2,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { baseUrl, defaultModel, generate, listModels, matchLabel } from "./ollama.js";
+import { baseUrl, defaultModel, generate, hasOwnNone, listModels, matchLabel, NONE } from "./ollama.js";
 
 function text(payload: unknown) {
   return {
@@ -68,12 +68,14 @@ server.registerTool(
   {
     title: "Classify text with the local model",
     description:
-      "Put a piece of text into exactly one of the labels you supply, using a local model. " +
-      "The reply is validated against your label set rather than trusted: if the model answers " +
-      "with something outside the list, or hedges between labels, this returns matched=false " +
-      "with the raw reply instead of guessing. Good for triage — log lines, error vs warning, " +
-      "which files look relevant, is this diff risky. Cheap and private; a wrong answer should " +
-      "be cheap for you to detect, so do not use it for decisions you cannot easily check.",
+      "Put a piece of text into one of the labels you supply, using a local model. The reply is " +
+      "validated against your label set rather than trusted: if the model answers with something " +
+      "outside the list, or hedges between labels, this returns matched=false with the raw reply " +
+      "instead of guessing. By default the model may also answer that no label fits, which comes " +
+      "back as declined=true — small models will otherwise pick a label confidently for text that " +
+      "belongs to none of them. Set allowNone=false only when a forced choice is genuinely wanted. " +
+      "Good for triage — log lines, error vs warning, which files look relevant, is this diff " +
+      "risky. Cheap and private; use it where a wrong answer is cheap for you to detect.",
     inputSchema: {
       content: z.string().min(1).describe("The text to classify."),
       labels: z
@@ -85,14 +87,28 @@ server.registerTool(
         .string()
         .optional()
         .describe("Optional extra guidance, e.g. what the labels mean."),
+      allowNone: z
+        .boolean()
+        .optional()
+        .describe(
+          "Default true: the model may reply that no label fits, returned as declined=true. " +
+            "Set false to force a choice, accepting that unrelated text will be mislabelled.",
+        ),
       model: z.string().optional().describe(`Model tag. Defaults to ${defaultModel()}.`),
     },
   },
-  async ({ content, labels, instruction, model }) => {
-    const list = labels.join(", ");
+  async ({ content, labels, instruction, allowNone, model }) => {
+    // Safe by default: without the escape hatch a small model reliably invents
+    // a label for unrelated text, which is the failure this tool must not have.
+    // Suppressed when the caller already supplies a "none" label of their own,
+    // since two ways of saying nothing-fits would be ambiguous.
+    const escape = (allowNone ?? true) && !hasOwnNone(labels);
+    const offered = escape ? [...labels, NONE] : labels;
+
     const prompt =
-      `Classify the text below into exactly one of these categories: ${list}.\n` +
+      `Classify the text below into exactly one of these categories: ${labels.join(", ")}.\n` +
       (instruction ? `${instruction}\n` : "") +
+      (escape ? `If none of those categories apply to the text, reply with: ${NONE}\n` : "") +
       `Reply with only the category name and nothing else.\n\nText:\n${content}`;
     try {
       // Short cap: the answer is one word, and it bounds the cost of a model
@@ -104,16 +120,21 @@ server.registerTool(
         temperature: 0,
         system: "You are a precise classifier. Answer with one category name only.",
       });
-      const label = matchLabel(r.text, labels);
+      const hit = matchLabel(r.text, offered);
+      const declined = escape && hit === NONE;
+      const label = declined ? undefined : hit;
       return text({
         matched: label !== undefined,
         label: label ?? null,
+        declined,
         raw: r.text,
         model: r.model,
         totalSeconds: r.totalSeconds,
-        ...(label === undefined
-          ? { note: "Reply did not resolve to exactly one of the supplied labels. Treat as unclassified." }
-          : {}),
+        ...(declined
+          ? { note: "The model reports that none of the supplied labels fit this text." }
+          : label === undefined
+            ? { note: "Reply did not resolve to exactly one of the supplied labels. Treat as unclassified." }
+            : {}),
       });
     } catch (err) {
       return failed((err as Error).message);

@@ -10,7 +10,7 @@ this one is for fast, private, low-stakes calls where the answer is wanted in th
 | tool | does |
 | --- | --- |
 | `local_ask` | Prompt in, text out. Summaries, boilerplate, commit messages, extraction. |
-| `local_classify` | Sort text into one of your labels. The reply is validated against the label set, not trusted. |
+| `local_classify` | Sort text into one of your labels. The reply is validated against the label set, not trusted, and the model may answer that none of them fit. |
 | `local_models` | List models Ollama has on disk, and the configured default. |
 
 No file access, no command execution, no memory between calls.

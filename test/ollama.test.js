@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { matchLabel } from "../dist/ollama.js";
+import { hasOwnNone, matchLabel, NONE } from "../dist/ollama.js";
 
 const LABELS = ["error", "warning", "info"];
 
@@ -47,4 +47,23 @@ test("does not match a label that is only a substring of another word", () => {
 
 test("handles labels containing regex metacharacters", () => {
   assert.equal(matchLabel("c++", ["c++", "python"]), "c++");
+});
+
+test("resolves the none escape hatch when it is offered", () => {
+  assert.equal(matchLabel("none", [...LABELS, NONE]), NONE);
+});
+
+test("does not resolve none when it was not offered", () => {
+  assert.equal(matchLabel("none", LABELS), undefined);
+});
+
+test("hasOwnNone detects a caller-supplied none, case and space insensitively", () => {
+  assert.equal(hasOwnNone(["error", "none"]), true);
+  assert.equal(hasOwnNone(["error", " None "]), true);
+  assert.equal(hasOwnNone(["error", "NONE"]), true);
+});
+
+test("hasOwnNone is false for labels that merely contain the word", () => {
+  assert.equal(hasOwnNone(["error", "none-of-the-above"]), false);
+  assert.equal(hasOwnNone(LABELS), false);
 });

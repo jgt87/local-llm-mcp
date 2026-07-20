@@ -56,10 +56,20 @@ it. A small model will answer `**error**` or `Answer: error`, so matching is gen
 but it refuses when the reply names two labels, and refuses substrings, so `informational` never
 resolves to `info`.
 
-**Known gap: the model will still pick a label when none fits.** Validation catches malformed and
-hedged replies, not confidently wrong ones — classify unrelated text into `[database-migration,
-authentication-bug]` and it will pick one, with `matched: true`. Only send content that genuinely
-belongs to one of the labels, or add a `none` label yourself.
+**The escape hatch is on by default, and that default is load-bearing.** Validation catches
+malformed and hedged replies but cannot catch a *confidently wrong* one, and a small model asked to
+choose will always choose: classifying "the weather in Rotterdam is mild" into
+`[database-migration, authentication-bug]` returned `authentication-bug` with `matched: true`. So
+`local_classify` offers the model a `none` option unless `allowNone: false`, and reports it as
+`declined: true` (never as a match). Measured after the change: the weather case declines, a real
+authentication bug with the same labels still classifies correctly, so the hatch does not make the
+model shy. `allowNone: false` restores forced choice, and is the right setting only when every
+input genuinely belongs to a label.
+
+The hatch is suppressed when the caller's own labels already include `none`, since two ways of
+saying nothing-fits would be ambiguous; that case comes back as an ordinary match on the caller's
+label. This narrows the failure but does not close it — the model can still decline something it
+should have classified, or mislabel within the set. Verification remains the caller's job.
 
 **stdout is the MCP transport.** Anything written there corrupts the protocol. Diagnostics go to
 stderr or nowhere.
