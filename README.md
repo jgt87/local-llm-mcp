@@ -124,6 +124,47 @@ Keep outputs short — `maxTokens` is the main latency lever. At 16 tok/s, 160 t
 with the CPU, so generation gets *slower* (26.2 vs 33.7 tok/s on a Radeon 890M) even though prompt
 ingest doubles.
 
+## Orchestration
+
+**There is no orchestrator.** Nothing in this server decides what gets routed to the local model.
+There is no router, no classifier picking a backend, no fallback chain. The only thing steering the
+choice is the tool descriptions in `src/index.ts`, which the calling model reads at call time and
+judges against. Editing those descriptions *is* how you change routing behaviour; there is no config
+to tune.
+
+**Nothing is offloaded here — that is the point.** These tools are synchronous: the prompt goes to
+Ollama over HTTP and the answer comes back in the same turn. There is no job id, no polling, no
+state on disk. A local 7B answers in seconds, and wrapping that in a job store would be pure
+overhead. The rule the two servers are built around: *if a tool would need to be polled, it belongs
+in `codex-offload`, not here.*
+
+### Deciding where work goes
+
+| Send it here | Send it to `codex-offload` | Keep it in the calling model |
+| --- | --- | --- |
+| Seconds of work, answer needed now | Minutes of work, must not block | Needs the conversation |
+| Verification cheaper than generation | Needs file access and repo context | Judgement, or the next decision hangs on it |
+| Wrong answer is cheap to notice | Result checkable against a git diff | Exploratory — direction shifts as you learn |
+| Privacy matters; nothing leaves the machine | Mechanical and self-contained | Wrong answer is expensive and hard to spot |
+
+Good fits: triage, classification, summarising long output, drafting boilerplate or commit messages,
+extracting fields from text. Bad fits: anything where a subtly wrong answer is expensive and hard to
+detect. This server has no file access, no repo context, and no memory between calls.
+
+### Output is validated, never trusted
+
+`local_classify` checks the reply against your label set instead of taking it at face value: a reply
+naming two labels, or one outside the set, comes back as `matched: false` with the raw text rather
+than a guess. Substrings do not count, so `informational` never silently resolves to `info`.
+
+This mirrors how the sibling server pairs Codex's self-report with a git diff — the delegate says
+what it did, and something independent checks it.
+
+The limit is worth stating plainly: validation catches malformed and hedged replies, but **cannot
+catch a confidently wrong one**. The `none` escape hatch narrows that gap and does not close it — a
+small model will still hand back a plausible in-set label for text belonging to none of them. Treat
+a returned label as triage, not a verdict.
+
 ## Licence
 
 MIT
