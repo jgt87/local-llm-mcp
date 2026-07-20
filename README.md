@@ -15,19 +15,91 @@ this one is for fast, private, low-stakes calls where the answer is wanted in th
 
 No file access, no command execution, no memory between calls.
 
-## Setup
+## Install
+
+### Prerequisites
+
+- **Node.js 20+**
+- **[Ollama](https://ollama.com) running locally**, with at least one model pulled. The server talks
+  to it over HTTP and does not start it for you:
 
 ```sh
+ollama pull qwen2.5-coder:7b
+ollama list          # confirm the model is on disk
+```
+
+### Build
+
+```sh
+git clone https://github.com/jgt87/local-llm-mcp.git
+cd local-llm-mcp
 npm install
 npm run build
-ollama pull qwen2.5-coder:7b
 ```
 
-Register with Claude Code:
+This produces `dist/index.js`. Note its **absolute** path — every step below needs it.
+
+### Add to VS Code
+
+MCP support is built into current VS Code; if the Command Palette lists `MCP:` commands, you have
+it. Pick either route:
+
+**Guided.** Command Palette (`Ctrl+Shift+P`) → **MCP: Add Server** → **Command (stdio)**. Enter
+`node` as the command and the absolute path to `dist/index.js` as the argument, then name it
+`local-llm`.
+
+**By hand.** Command Palette → **MCP: Open User Configuration** to open your user `mcp.json`
+(`%APPDATA%\Code\User\mcp.json` on Windows), and add the server:
+
+```json
+{
+  "servers": {
+    "local-llm": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:/path/to/local-llm-mcp/dist/index.js"]
+    }
+  }
+}
+```
+
+Use forward slashes on Windows, or escape backslashes as `\\` — a raw `C:\path` is invalid JSON and
+the server will silently fail to start.
+
+Non-default Ollama host or model? Add an `env` block alongside `args`:
+
+```json
+      "env": { "LOCAL_LLM_MODEL": "llama3.2:3b" }
+```
+
+To scope it to one project instead of your whole profile, use **MCP: Open Workspace Folder
+Configuration** and put the same `servers` block in `.vscode/mcp.json`. That file can be committed,
+which gives everyone on the repo the same tools.
+
+**Verify.** Open the Chat view, switch to **Agent** mode, click **Configure Tools**, and confirm
+`local_ask`, `local_classify` and `local_models` appear and are enabled. **MCP: List Servers** shows
+the server's status and its logs if it failed to start. If the tools load but every call errors,
+Ollama is not running — check `ollama list`.
+
+### Add to Claude Code
 
 ```sh
-claude mcp add --scope user local-llm -- node /absolute/path/to/dist/index.js
+claude mcp add local-llm --scope user -- node /absolute/path/to/dist/index.js
 ```
+
+Confirm with `/mcp` in a session, or `claude mcp list` from a shell.
+
+### After changing the code
+
+A running server keeps serving the old `dist/`, so rebuild **and** restart it:
+
+```sh
+npm run build
+```
+
+- **VS Code** — **MCP: List Servers** → select the server → **Restart**. (The experimental
+  `chat.mcp.autoStart` setting can do this for you.)
+- **Claude Code** — restart the session; MCP servers connect at session start.
 
 ## Configuration
 
