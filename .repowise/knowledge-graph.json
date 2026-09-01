@@ -1,0 +1,263 @@
+{
+  "version": "1.0.0",
+  "schema_version": 1,
+  "project": {
+    "name": "LocalLLM",
+    "is_monorepo": false,
+    "total_files": 7,
+    "entry_points": [
+      "src/index.ts"
+    ],
+    "tech_stack": [
+      {
+        "name": "Node.js",
+        "version": ">=20",
+        "category": "language"
+      },
+      {
+        "name": "TypeScript",
+        "version": "7.0.2",
+        "category": "language"
+      }
+    ],
+    "entry_candidates": [
+      "src/index.ts"
+    ],
+    "graph_mode": "flow"
+  },
+  "nodes": [
+    {
+      "id": "file:CLAUDE.md",
+      "type": "document",
+      "filePath": "CLAUDE.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 117,
+      "complexity": "moderate",
+      "pagerank": 0.072993,
+      "communityId": 1,
+      "tags": [],
+      "summary": "Repository instructions and context for AI coding agents."
+    },
+    {
+      "id": "file:README.md",
+      "type": "document",
+      "filePath": "README.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 169,
+      "complexity": "moderate",
+      "pagerank": 0.072993,
+      "communityId": 2,
+      "tags": [],
+      "summary": "Project overview and entry point for new readers."
+    },
+    {
+      "id": "file:package.json",
+      "type": "config",
+      "filePath": "package.json",
+      "language": "json",
+      "symbolCount": 0,
+      "lineCount": 24,
+      "complexity": "simple",
+      "pagerank": 0.072993,
+      "communityId": 5,
+      "tags": [
+        "config"
+      ],
+      "summary": "Node package manifest: dependencies, scripts, and metadata."
+    },
+    {
+      "id": "file:src/index.ts",
+      "type": "file",
+      "filePath": "src/index.ts",
+      "language": "typescript",
+      "symbolCount": 4,
+      "lineCount": 174,
+      "complexity": "moderate",
+      "pagerank": 0.072993,
+      "communityId": 0,
+      "tags": [
+        "entry_point"
+      ],
+      "summary": "Application module index defining text, failed.",
+      "primaryOwner": "gise87"
+    },
+    {
+      "id": "file:src/ollama.ts",
+      "type": "file",
+      "filePath": "src/ollama.ts",
+      "language": "typescript",
+      "symbolCount": 13,
+      "lineCount": 141,
+      "complexity": "moderate",
+      "pagerank": 0.088504,
+      "communityId": 0,
+      "tags": [],
+      "summary": "Application module ollama defining GenerateOpts, GenerateResult, defaultModel.",
+      "primaryOwner": "gise87"
+    },
+    {
+      "id": "file:test/ollama.test.js",
+      "type": "file",
+      "filePath": "test/ollama.test.js",
+      "language": "javascript",
+      "symbolCount": 1,
+      "lineCount": 62,
+      "complexity": "simple",
+      "pagerank": 0.072993,
+      "communityId": 3,
+      "tags": [
+        "test"
+      ],
+      "summary": "Tests for ollama.",
+      "primaryOwner": "gise87"
+    },
+    {
+      "id": "file:tsconfig.json",
+      "type": "config",
+      "filePath": "tsconfig.json",
+      "language": "json",
+      "symbolCount": 0,
+      "lineCount": 9,
+      "complexity": "simple",
+      "pagerank": 0.072993,
+      "communityId": 6,
+      "tags": [
+        "config"
+      ],
+      "summary": "TypeScript compiler configuration."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/index.ts",
+      "target": "file:external:@modelcontextprotocol/sdk/server/mcp.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/index.ts",
+      "target": "file:external:@modelcontextprotocol/sdk/server/stdio.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/index.ts",
+      "target": "file:external:zod",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/index.ts",
+      "target": "file:src/ollama.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:test/ollama.test.js",
+      "target": "file:external:node:assert/strict",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:test/ollama.test.js",
+      "target": "file:external:node:test",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:application",
+      "name": "Application",
+      "description": "",
+      "nodeIds": [
+        "file:CLAUDE.md",
+        "file:README.md",
+        "file:package.json",
+        "file:src/index.ts",
+        "file:src/ollama.ts",
+        "file:tsconfig.json"
+      ],
+      "display_order": 0,
+      "order_basis": "canonical"
+    },
+    {
+      "id": "layer:test",
+      "name": "Test",
+      "description": "",
+      "nodeIds": [
+        "file:test/ollama.test.js"
+      ],
+      "display_order": 1,
+      "order_basis": "canonical"
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "target_path": "README.md",
+      "page_type": "repo_overview",
+      "title": "README.md",
+      "depth": 0,
+      "kind": "overview",
+      "reason": "Start here for the end-to-end picture before diving into the code.",
+      "layer_id": "layer:application"
+    },
+    {
+      "order": 2,
+      "target_path": "src/index.ts",
+      "page_type": "file_page",
+      "title": "index.ts",
+      "depth": 0,
+      "kind": "code",
+      "reason": "An entry point \u2014 execution and imports fan out from here.",
+      "layer_id": "layer:application"
+    },
+    {
+      "order": 3,
+      "target_path": "src/ollama.ts",
+      "page_type": "file_page",
+      "title": "ollama.ts",
+      "depth": 1,
+      "kind": "code",
+      "reason": "Directly used by the entry points above; a core collaborator.",
+      "layer_id": "layer:application"
+    },
+    {
+      "order": 4,
+      "target_path": "test/ollama.test.js",
+      "page_type": "file_page",
+      "title": "ollama.test.js",
+      "depth": 2,
+      "kind": "code",
+      "reason": "The test suite \u2014 how the system's behavior is verified (the JavaScript test suite lives alongside it).",
+      "layer_id": "layer:test"
+    }
+  ],
+  "modules": [
+    {
+      "id": "module:application",
+      "name": "Application",
+      "path": "",
+      "layerId": "layer:application",
+      "nodeIds": [
+        "file:CLAUDE.md",
+        "file:README.md",
+        "file:package.json",
+        "file:src/index.ts",
+        "file:src/ollama.ts",
+        "file:tsconfig.json"
+      ],
+      "wholeLayer": true,
+      "language": "json"
+    }
+  ]
+}
