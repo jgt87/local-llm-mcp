@@ -1,8 +1,30 @@
 {
-  "last_sync_commit": "a252020e49c8b46c71d34746720b9617dcf8246f",
+  "last_sync_commit": "2d32fa091f19c583dfd9e627bf254380ecdf4a43",
   "total_pages": 0,
   "docs_mode": "none",
   "docs_enabled": false,
   "store_format_version": 2,
-  "written_by_version": "0.46.0"
+  "written_by_version": "0.46.0",
+  "last_docs_commit": "436b2b289f69bda0e8c96d5b8879d9f17721cf71",
+  "knowledge_graph": {
+    "version": "1.0.0",
+    "node_count": 23,
+    "layer_count": 4,
+    "tour_steps": 7,
+    "has_summaries": true,
+    "fingerprint": "a5d50771eaba37a1"
+  },
+  "phase_timings": {
+    "run": 0.31299999996554106
+  },
+  "git_history_version": 3,
+  "config_fingerprint": "cdf6262ba50f8c3d32321c0926901564b4aede8cc929068910fac2537fd3216a",
+  "config_dependency_fingerprints": {
+    "traversal": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "git_history": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "health": "594e0c42a3a22127976d1564801ee46ca91f3d761eb56819f9da91ba062024ad",
+    "generation": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "state_only": "d280dea6968a2f9753a002703480e56f6fa4092eadbd3ca309620b066d6a4a3a",
+    "other": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  }
 }

@@ -27,14 +27,32 @@ JSON-RPC script (initialize → `notifications/initialized` → `tools/call`).
 
 - `src/index.ts` — MCP server, tool definitions and their descriptions
 - `src/ollama.ts` — HTTP client, plus the pure helpers that keep model output honest
+- `src/openrouter.ts` — optional hosted backend (OpenRouter chat completions + model catalogue)
+- `src/prompts.ts` — the slash commands, defined once and rendered two ways: as MCP prompts
+  (`/mcp__local-llm__commit`) and as Claude Code command files (`/local_commit`). They instruct the
+  *calling* model how to use the tools; each ends in a verification step, because that is the part
+  the local model cannot do
+- `scripts/commands.mjs` — writes `commands/local_*.md` from the built `dist/prompts.js`; with
+  `--install` also to `~/.claude/commands/`. Those files are generated: edit `src/prompts.ts`, then
+  `npm run commands` (or `npm run install-commands`)
 
 ## Configuration
 
 | env | default | meaning |
 | --- | --- | --- |
+| `LOCAL_LLM_PROVIDER` | `ollama` | backend used when a call gives no `provider` (`ollama` or `openrouter`) |
 | `OLLAMA_HOST` | `http://127.0.0.1:11434` | Ollama endpoint |
 | `LOCAL_LLM_MODEL` | `qwen2.5-coder:7b` | default model tag |
 | `LOCAL_LLM_TIMEOUT_MS` | `120000` | per-request timeout |
+| `OPENROUTER_API_KEY` | — | required for `provider: "openrouter"`; read at server start |
+| `OPENROUTER_MODEL` | `deepseek/deepseek-v4-flash` | default OpenRouter model id |
+| `OPENROUTER_BASE_URL` | `https://openrouter.ai/api/v1` | API base |
+| `OPENROUTER_TIMEOUT_MS` | `60000` | per-request timeout |
+
+**OpenRouter is opt-in per call** (or via `LOCAL_LLM_PROVIDER`). It breaks the "nothing leaves the
+machine" property, so the tool descriptions say so and the caller decides. The shape of the work
+stays the same — short and synchronous; a hosted model is just faster and stronger. The catalogue
+listing (`local_models` with `provider: "openrouter"`) is public and works without a key.
 
 ## Notes
 

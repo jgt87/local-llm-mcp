@@ -4,10 +4,11 @@
   "project": {
     "name": "LocalLLM",
     "is_monorepo": false,
-    "total_files": 7,
+    "total_files": 16,
     "entry_points": [
       "src/index.ts"
     ],
+    "packages": [],
     "tech_stack": [
       {
         "name": "Node.js",
@@ -27,17 +28,31 @@
   },
   "nodes": [
     {
+      "id": "file:CHANGELOG.md",
+      "type": "document",
+      "filePath": "CHANGELOG.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 25,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 2,
+      "tags": [],
+      "summary": "Release history and notable changes."
+    },
+    {
       "id": "file:CLAUDE.md",
       "type": "document",
       "filePath": "CLAUDE.md",
       "language": "markdown",
       "symbolCount": 0,
-      "lineCount": 117,
+      "lineCount": 154,
       "complexity": "moderate",
-      "pagerank": 0.072993,
-      "communityId": 1,
+      "pagerank": 0.035099,
+      "communityId": 3,
       "tags": [],
-      "summary": "Repository instructions and context for AI coding agents."
+      "summary": "Repository instructions and context for AI coding agents.",
+      "primaryOwner": "gise87"
     },
     {
       "id": "file:README.md",
@@ -45,12 +60,78 @@
       "filePath": "README.md",
       "language": "markdown",
       "symbolCount": 0,
-      "lineCount": 169,
+      "lineCount": 244,
       "complexity": "moderate",
-      "pagerank": 0.072993,
-      "communityId": 2,
+      "pagerank": 0.035099,
+      "communityId": 4,
       "tags": [],
-      "summary": "Project overview and entry point for new readers."
+      "summary": "Project overview and entry point for new readers.",
+      "primaryOwner": "gise87"
+    },
+    {
+      "id": "file:commands/local_ask.md",
+      "type": "document",
+      "filePath": "commands/local_ask.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 32,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 5,
+      "tags": [],
+      "summary": "Documentation: local_ask.md."
+    },
+    {
+      "id": "file:commands/local_commit.md",
+      "type": "document",
+      "filePath": "commands/local_commit.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 47,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 6,
+      "tags": [],
+      "summary": "Documentation: local_commit.md."
+    },
+    {
+      "id": "file:commands/local_extract.md",
+      "type": "document",
+      "filePath": "commands/local_extract.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 42,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 7,
+      "tags": [],
+      "summary": "Documentation: local_extract.md."
+    },
+    {
+      "id": "file:commands/local_summarize.md",
+      "type": "document",
+      "filePath": "commands/local_summarize.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 44,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 8,
+      "tags": [],
+      "summary": "Documentation: local_summarize.md."
+    },
+    {
+      "id": "file:commands/local_triage.md",
+      "type": "document",
+      "filePath": "commands/local_triage.md",
+      "language": "markdown",
+      "symbolCount": 0,
+      "lineCount": 46,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 9,
+      "tags": [],
+      "summary": "Documentation: local_triage.md."
     },
     {
       "id": "file:package.json",
@@ -58,30 +139,43 @@
       "filePath": "package.json",
       "language": "json",
       "symbolCount": 0,
-      "lineCount": 24,
+      "lineCount": 28,
       "complexity": "simple",
-      "pagerank": 0.072993,
-      "communityId": 5,
+      "pagerank": 0.035099,
+      "communityId": 10,
       "tags": [
         "config"
       ],
-      "summary": "Node package manifest: dependencies, scripts, and metadata."
+      "summary": "Node package manifest: dependencies, scripts, and metadata.",
+      "primaryOwner": "gise87"
+    },
+    {
+      "id": "file:scripts/commands.mjs",
+      "type": "file",
+      "filePath": "scripts/commands.mjs",
+      "language": "javascript",
+      "symbolCount": 1,
+      "lineCount": 21,
+      "complexity": "simple",
+      "pagerank": 0.035099,
+      "communityId": 11,
+      "tags": [],
+      "summary": "Docs & Tooling module commands (1 symbols)."
     },
     {
       "id": "file:src/index.ts",
       "type": "file",
       "filePath": "src/index.ts",
       "language": "typescript",
-      "symbolCount": 4,
-      "lineCount": 174,
+      "symbolCount": 9,
+      "lineCount": 254,
       "complexity": "moderate",
-      "pagerank": 0.072993,
+      "pagerank": 0.035099,
       "communityId": 0,
       "tags": [
         "entry_point"
       ],
-      "summary": "Application module index defining text, failed.",
-      "primaryOwner": "gise87"
+      "summary": "Application module index defining run, text, failed."
     },
     {
       "id": "file:src/ollama.ts",
@@ -91,11 +185,36 @@
       "symbolCount": 13,
       "lineCount": 141,
       "complexity": "moderate",
-      "pagerank": 0.088504,
+      "pagerank": 0.074132,
+      "communityId": 1,
+      "tags": [],
+      "summary": "Application module ollama defining GenerateOpts, GenerateResult, defaultModel."
+    },
+    {
+      "id": "file:src/openrouter.ts",
+      "type": "file",
+      "filePath": "src/openrouter.ts",
+      "language": "typescript",
+      "symbolCount": 10,
+      "lineCount": 113,
+      "complexity": "moderate",
+      "pagerank": 0.040071,
+      "communityId": 1,
+      "tags": [],
+      "summary": "Application module openrouter defining openRouterDefaultModel, openRouterConfigured, apiKey."
+    },
+    {
+      "id": "file:src/prompts.ts",
+      "type": "file",
+      "filePath": "src/prompts.ts",
+      "language": "typescript",
+      "symbolCount": 11,
+      "lineCount": 267,
+      "complexity": "moderate",
+      "pagerank": 0.040071,
       "communityId": 0,
       "tags": [],
-      "summary": "Application module ollama defining GenerateOpts, GenerateResult, defaultModel.",
-      "primaryOwner": "gise87"
+      "summary": "Application module prompts defining sourceOf, Command, compose."
     },
     {
       "id": "file:test/ollama.test.js",
@@ -105,13 +224,12 @@
       "symbolCount": 1,
       "lineCount": 62,
       "complexity": "simple",
-      "pagerank": 0.072993,
-      "communityId": 3,
+      "pagerank": 0.035099,
+      "communityId": 13,
       "tags": [
         "test"
       ],
-      "summary": "Tests for ollama.",
-      "primaryOwner": "gise87"
+      "summary": "Tests for ollama."
     },
     {
       "id": "file:tsconfig.json",
@@ -121,15 +239,100 @@
       "symbolCount": 0,
       "lineCount": 9,
       "complexity": "simple",
-      "pagerank": 0.072993,
-      "communityId": 6,
+      "pagerank": 0.035099,
+      "communityId": 12,
       "tags": [
         "config"
       ],
-      "summary": "TypeScript compiler configuration."
+      "summary": "TypeScript compiler configuration.",
+      "primaryOwner": "gise87"
+    },
+    {
+      "id": "function:src/ollama.ts:baseUrl",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "baseUrl",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
+    },
+    {
+      "id": "function:src/ollama.ts:defaultModel",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "defaultModel",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
+    },
+    {
+      "id": "function:src/ollama.ts:generate",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "generate",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
+    },
+    {
+      "id": "function:src/ollama.ts:hasOwnNone",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "hasOwnNone",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
+    },
+    {
+      "id": "function:src/ollama.ts:listModels",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "listModels",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
+    },
+    {
+      "id": "function:src/ollama.ts:matchLabel",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "matchLabel",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
+    },
+    {
+      "id": "function:src/ollama.ts:post",
+      "type": "function",
+      "filePath": "src/ollama.ts",
+      "name": "post",
+      "language": "typescript",
+      "tags": [],
+      "summary": ""
     }
   ],
   "edges": [
+    {
+      "source": "file:scripts/commands.mjs",
+      "target": "file:external:node:fs",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/commands.mjs",
+      "target": "file:external:node:os",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/commands.mjs",
+      "target": "file:external:node:path",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
     {
       "source": "file:src/index.ts",
       "target": "file:external:@modelcontextprotocol/sdk/server/mcp.js",
@@ -159,6 +362,90 @@
       "weight": 1.0
     },
     {
+      "source": "file:src/index.ts",
+      "target": "file:src/openrouter.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/index.ts",
+      "target": "file:src/prompts.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:baseUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:defaultModel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:generate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:hasOwnNone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:listModels",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:matchLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/ollama.ts",
+      "target": "function:src/ollama.ts:post",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/openrouter.ts",
+      "target": "file:src/ollama.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/prompts.ts",
+      "target": "file:external:@modelcontextprotocol/sdk/server/mcp.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/prompts.ts",
+      "target": "file:external:zod",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
       "source": "file:test/ollama.test.js",
       "target": "file:external:node:assert/strict",
       "type": "tested_by",
@@ -175,18 +462,45 @@
   ],
   "layers": [
     {
+      "id": "layer:cli",
+      "name": "CLI",
+      "description": "",
+      "nodeIds": [
+        "file:commands/local_ask.md",
+        "file:commands/local_commit.md",
+        "file:commands/local_extract.md",
+        "file:commands/local_summarize.md",
+        "file:commands/local_triage.md"
+      ],
+      "display_order": 0,
+      "order_basis": "canonical"
+    },
+    {
       "id": "layer:application",
       "name": "Application",
       "description": "",
       "nodeIds": [
+        "file:CHANGELOG.md",
         "file:CLAUDE.md",
         "file:README.md",
         "file:package.json",
         "file:src/index.ts",
         "file:src/ollama.ts",
+        "file:src/openrouter.ts",
+        "file:src/prompts.ts",
         "file:tsconfig.json"
       ],
-      "display_order": 0,
+      "display_order": 1,
+      "order_basis": "canonical"
+    },
+    {
+      "id": "layer:docs-tooling",
+      "name": "Docs & Tooling",
+      "description": "",
+      "nodeIds": [
+        "file:scripts/commands.mjs"
+      ],
+      "display_order": 2,
       "order_basis": "canonical"
     },
     {
@@ -196,7 +510,7 @@
       "nodeIds": [
         "file:test/ollama.test.js"
       ],
-      "display_order": 1,
+      "display_order": 3,
       "order_basis": "canonical"
     }
   ],
@@ -233,10 +547,40 @@
     },
     {
       "order": 4,
+      "target_path": "src/openrouter.ts",
+      "page_type": "file_page",
+      "title": "openrouter.ts",
+      "depth": 1,
+      "kind": "code",
+      "reason": "Directly used by the entry points above; a core collaborator.",
+      "layer_id": "layer:application"
+    },
+    {
+      "order": 5,
+      "target_path": "src/prompts.ts",
+      "page_type": "file_page",
+      "title": "prompts.ts",
+      "depth": 1,
+      "kind": "code",
+      "reason": "Directly used by the entry points above; a core collaborator.",
+      "layer_id": "layer:application"
+    },
+    {
+      "order": 6,
+      "target_path": "scripts/commands.mjs",
+      "page_type": "file_page",
+      "title": "commands.mjs",
+      "depth": 2,
+      "kind": "code",
+      "reason": "Off the import path from the entry points \u2014 a standalone or supporting file.",
+      "layer_id": "layer:docs-tooling"
+    },
+    {
+      "order": 7,
       "target_path": "test/ollama.test.js",
       "page_type": "file_page",
       "title": "ollama.test.js",
-      "depth": 2,
+      "depth": 3,
       "kind": "code",
       "reason": "The test suite \u2014 how the system's behavior is verified (the JavaScript test suite lives alongside it).",
       "layer_id": "layer:test"
@@ -244,20 +588,38 @@
   ],
   "modules": [
     {
+      "id": "module:commands",
+      "name": "CLI",
+      "path": "commands",
+      "layerId": "layer:cli",
+      "nodeIds": [
+        "file:commands/local_ask.md",
+        "file:commands/local_commit.md",
+        "file:commands/local_extract.md",
+        "file:commands/local_summarize.md",
+        "file:commands/local_triage.md"
+      ],
+      "wholeLayer": true,
+      "language": "markdown"
+    },
+    {
       "id": "module:application",
       "name": "Application",
       "path": "",
       "layerId": "layer:application",
       "nodeIds": [
+        "file:CHANGELOG.md",
         "file:CLAUDE.md",
         "file:README.md",
         "file:package.json",
         "file:src/index.ts",
         "file:src/ollama.ts",
+        "file:src/openrouter.ts",
+        "file:src/prompts.ts",
         "file:tsconfig.json"
       ],
       "wholeLayer": true,
-      "language": "json"
+      "language": "typescript"
     }
   ]
 }

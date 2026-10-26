@@ -11,9 +11,45 @@ this one is for fast, private, low-stakes calls where the answer is wanted in th
 | --- | --- |
 | `local_ask` | Prompt in, text out. Summaries, boilerplate, commit messages, extraction. |
 | `local_classify` | Sort text into one of your labels. Replies outside the label set are rejected rather than guessed at, and the model can answer that none fit — though a small model will still label plainly unrelated text with confidence, so treat a result as triage, not a verdict. |
-| `local_models` | List models Ollama has on disk, and the configured default. |
+| `local_models` | List models Ollama has on disk, and the configured default. With `provider: "openrouter"` and a `search` term, browse OpenRouter's catalogue with prices. |
 
 No file access, no command execution, no memory between calls.
+
+## Slash commands
+
+Five commands tell the calling model how to drive the tools for a common job: what to read, what to
+send, how tight to keep `maxTokens`, and how to check the reply before showing it.
+
+| command | arguments | does |
+| --- | --- | --- |
+| `/local_ask` | `<question>` | One question to `local_ask`; shows the answer with model and timing. |
+| `/local_summarize` | `[source] [focus]` | Summarises a file, a command's output, or the last long output, then checks each claim against the source. |
+| `/local_commit` | `[hint]` | Drafts a commit message from the staged diff in the repo's subject style, corrects it against the diff. Never commits on its own. |
+| `/local_triage` | `<labels> [source]` | Splits the source into items and runs `local_classify` on each; reports declined and unmatched items separately. |
+| `/local_extract` | `<fields> [source]` | Pulls named fields out as JSON and nulls any value that does not appear in the source. |
+
+A source can be a file path, a shell command, or literal text; without one, the command uses the last
+relevant output in the conversation. Labels and fields are comma-separated with no spaces, e.g.
+`/local_triage bug,config,noise build.log`. The local model never sees these instructions — the
+calling model does the reading and checking, and uses the local model only for generation.
+
+They are defined once, in `src/prompts.ts`, and reach clients two ways:
+
+- **Claude Code** — as `/local_<name>` command files. Install them for every project with:
+
+  ```sh
+  npm run install-commands   # writes ~/.claude/commands/local_*.md
+  ```
+
+  `npm run commands` regenerates only the copies in `commands/`. Rerun either after editing
+  `src/prompts.ts`.
+- **Any MCP client** — as MCP prompts served by the server itself, with no install step. Clients
+  prefix them: `/mcp__local-llm__ask` in Claude Code, `/mcp.local-llm.ask` in VS Code chat.
+
+`local_ask` and `local_classify` take an optional `provider` — `"ollama"` (default) or
+`"openrouter"` — and a `model` matching it, e.g. `{ "provider": "openrouter", "model":
+"qwen/qwen3-coder-next" }`. OpenRouter is much faster than CPU inference, but the text leaves the
+machine and is billed per token.
 
 ## Install
 
@@ -105,9 +141,26 @@ npm run build
 
 | env | default |
 | --- | --- |
+| `LOCAL_LLM_PROVIDER` | `ollama` (or `openrouter`) |
 | `OLLAMA_HOST` | `http://127.0.0.1:11434` |
 | `LOCAL_LLM_MODEL` | `qwen2.5-coder:7b` |
 | `LOCAL_LLM_TIMEOUT_MS` | `120000` |
+| `OPENROUTER_API_KEY` | — (required for OpenRouter) |
+| `OPENROUTER_MODEL` | `deepseek/deepseek-v4-flash` |
+| `OPENROUTER_BASE_URL` | `https://openrouter.ai/api/v1` |
+| `OPENROUTER_TIMEOUT_MS` | `60000` |
+
+### OpenRouter
+
+Create a key at [openrouter.ai/keys](https://openrouter.ai/keys) and set it as a user environment
+variable, so it stays out of MCP config files:
+
+```powershell
+[Environment]::SetEnvironmentVariable('OPENROUTER_API_KEY', '<your key>', 'User')
+```
+
+Environment variables are read when the server starts, so restart your editor or Claude Code
+afterwards. `local_models` reports `configured: true` once the key is picked up.
 
 ## Performance
 
