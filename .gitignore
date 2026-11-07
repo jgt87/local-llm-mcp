@@ -4,3 +4,5 @@ dist/
 
 # repowise owner-digest key (local)
 .repowise/events.key
+.repowise/
+.claude/
